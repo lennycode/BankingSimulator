@@ -50,7 +50,7 @@ public class RequestBankingInfo {
 
                     JsonNode node = objectMapper.readValue(transactions, JsonNode.class);
                     JsonNode brandNode = node.get("transactions");
-                    ArrayList<Transaction>  transactionList = new ArrayList<Transaction>();
+                    ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
                     for (int i = 0; i < brandNode.size(); i++) {
                         Transaction t = new Transaction();
                         JsonNode tNode = brandNode.get(i);
@@ -72,9 +72,6 @@ public class RequestBankingInfo {
                 }
 
 
-
-
-
                 asyncCallback.processFinish((Object) transactions);
             }
         }).execute(transactionRequest);
@@ -84,7 +81,7 @@ public class RequestBankingInfo {
 
     public void createBankingSession(int id) {
 
-        String loginRequest = Constants.dataEndpoint+ String.format(Constants.user_information, id);
+        String loginRequest = Constants.dataEndpoint + String.format(Constants.user_information, id);
         mDownloadFragment.DownloadFactory(new AsyncResponse() {
             @Override
             public void processFinish(Object output) {
@@ -94,15 +91,15 @@ public class RequestBankingInfo {
                 ObjectMapper objectMapper = new ObjectMapper();
 
 
-                try{
+                try {
                     JsonNode node = objectMapper.readValue(transactions, JsonNode.class);
                     JsonNode userNode = node.get("user");
-                    JsonNode user =  userNode.get(0);
-                    Session.email = user.get("email").toString().replace("\"","");
-                    Session.firstName = user.get("name").toString().replace("\"","");
-                    Session.lastName  = user.get("surnames").toString().replace("\"","");
-                    Session.userUUID = user.get("id").toString().replace("\"","");
-                    Session.cardId = user.get("cardID").toString().replace("\"","");
+                    JsonNode user = userNode.get(0);
+                    Session.email = user.get("email").toString().replace("\"", "");
+                    Session.firstName = user.get("name").toString().replace("\"", "");
+                    Session.lastName = user.get("surnames").toString().replace("\"", "");
+                    Session.userUUID = user.get("id").toString().replace("\"", "");
+                    Session.cardId = user.get("cardID").toString().replace("\"", "");
                     Session.isLoggedIn = true;
                     Session.appState = AppState.LoggedIn;
 
@@ -118,18 +115,17 @@ public class RequestBankingInfo {
     }
 
 
-
     public void verifyLogin(String card, String pass) {
 
-        String loginRequest = Constants.dataEndpoint+ String.format(Constants.login_check, card, pass);
+        String loginRequest = Constants.dataEndpoint + String.format(Constants.login_check, card, pass);
         mDownloadFragment.DownloadFactory(new AsyncResponse() {
             @Override
             public void processFinish(Object output) {
                 String o = output.toString();
-                if(o.equals("false")) {
-                    EventBus.getDefault().post(new LoginMessageEvent( false,0));
+                if (o.equals("false")) {
+                    EventBus.getDefault().post(new LoginMessageEvent(false, 0));
                 } else {
-                    EventBus.getDefault().post(new LoginMessageEvent( true,Integer.parseInt(o)));
+                    EventBus.getDefault().post(new LoginMessageEvent(true, Integer.parseInt(o)));
                 }
             }
         }).execute(loginRequest);
@@ -137,22 +133,22 @@ public class RequestBankingInfo {
 
     }
 
-    public void fetchUserInfo(String id){
+    public void fetchUserInfo(String id) {
 
     }
 
 
-    public void regsterUser(String email, String pass, String cardId, String firstName, String lastName ) {
+    public void regsterUser(String email, String pass, String cardId, String firstName, String lastName) {
 
-        String loginRequest = Constants.dataEndpoint+ String.format(Constants.register_user, email, pass, cardId, firstName, lastName);
+        String loginRequest = Constants.dataEndpoint + String.format(Constants.register_user, email, pass, cardId, firstName, lastName);
         mDownloadFragment.DownloadFactory(new AsyncResponse() {
             @Override
             public void processFinish(Object output) {
                 String o = output.toString();
-                if(o.equals("false")) {
-                    EventBus.getDefault().post(new UserInfoMessageEvent( false));
+                if (o.equals("false")) {
+                    EventBus.getDefault().post(new UserInfoMessageEvent(false));
                 } else {
-                    EventBus.getDefault().post(new UserInfoMessageEvent( true));
+                    EventBus.getDefault().post(new UserInfoMessageEvent(true));
                 }
             }
         }).execute(loginRequest);
@@ -161,22 +157,22 @@ public class RequestBankingInfo {
     }
 
 
-    public void getAccountInfo(String id){
+    public void getAccountInfo(String id) {
 
 
     }
 
-    public void updateUser(String email, String pass, String cardId, String firstName, String lastName ) {
+    public void updateUser(String email, String pass, String cardId, String firstName, String lastName) {
 
-        String loginRequest = Constants.dataEndpoint+ String.format(Constants.update_user, Session.userUUID, email, pass, cardId, firstName, lastName);
+        String loginRequest = Constants.dataEndpoint + String.format(Constants.update_user, Session.userUUID, email, pass, cardId, firstName, lastName);
         mDownloadFragment.DownloadFactory(new AsyncResponse() {
             @Override
             public void processFinish(Object output) {
                 String o = output.toString();
-                if(o.equals("false")) {
-                    EventBus.getDefault().post(new UserInfoMessageEvent( false));
+                if (o.equals("false")) {
+                    EventBus.getDefault().post(new UserInfoMessageEvent(false));
                 } else {
-                    EventBus.getDefault().post(new UserInfoMessageEvent( true));
+                    EventBus.getDefault().post(new UserInfoMessageEvent(true));
                 }
             }
         }).execute(loginRequest);
@@ -186,7 +182,7 @@ public class RequestBankingInfo {
 
     public void getAcctByEmail(String email) {
 
-        String loginRequest = Constants.dataEndpoint+ String.format(Constants.accounts_by_email,   email);
+        String loginRequest = Constants.dataEndpoint + String.format(Constants.accounts_by_email, email);
         mDownloadFragment.DownloadFactory(new AsyncResponse() {
             @Override
             public void processFinish(Object data) {
@@ -196,19 +192,19 @@ public class RequestBankingInfo {
 
                     JsonNode node = objectMapper.readValue(accounts, JsonNode.class);
                     JsonNode brandNode = node.get("user");
-                    ArrayList<Account>  accountList = new ArrayList<Account>();
+                    ArrayList<Account> accountList = new ArrayList<Account>();
                     for (int i = 0; i < brandNode.size(); i++) {
                         Account t = new Account();
                         JsonNode tNode = brandNode.get(i);
-                        t.balance = Double.valueOf(tNode.get("balance").toString().replace("\"",""));
-                        t.id = tNode.get("id").toString().replace("\"","");
-                        t.user_id= tNode.get("user_id").toString().replace("\"","");
+                        t.balance = Double.valueOf(tNode.get("balance").toString().replace("\"", ""));
+                        t.id = tNode.get("id").toString().replace("\"", "");
+                        t.user_id = tNode.get("user_id").toString().replace("\"", "");
                         t.pin = tNode.get("pin").toString();
                         accountList.add(t);
 
                     }
-                    EventBus.getDefault().post(new AccountMessageEvent(true,accountList ));
-                    String transaction = brandNode.asText();
+
+                    asyncCallback.processFinish(accountList);
                 } catch (IOException e) {
                     //Send a failboy message back.
                     e.printStackTrace();

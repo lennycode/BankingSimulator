@@ -10,11 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
-
+    DecimalFormat df2 = new DecimalFormat(".00");
     private Context context;
     private List<Transaction> transactionList;
 //    private Picasso picasso;
@@ -30,12 +31,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public TransactionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.from(parent.getContext())
-                .inflate(R.layout.card_view, parent, false);
+                .inflate(R.layout.transaction_card_view, parent, false);
 
         TransactionViewHolder transactionViewHolder = new TransactionViewHolder(view);
         return transactionViewHolder;
     }
-
 
 
     @Override
@@ -44,10 +44,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         try {
             transaction = transactionList.get(position);
 
-//            holder.txtAmount.setText( transaction.transactionAmount);
-//            holder.txtPurchaseTime.setText(transaction.purchaseDate+"\n"+transaction.purchaseTime);
-//            holder.txtStore.setText(transaction.Store + "\n"+transaction.Address);
-//            holder.txtType.setText(transaction.TransactionType);
+           holder.txtAmount.setText((df2.format(transaction.amount) + "\u20ac") );
+            holder.txtTransTo.setText(transaction.user_receiver);
+            holder.txtTransDate.setText(transaction.datetime);
 
 
 
@@ -70,14 +69,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     //ViewHolder class
     public class TransactionViewHolder extends RecyclerView.ViewHolder {
-        public boolean isShoppingList;
+
         public CardView cvTransaction;
-        public ImageView ivImg;
-        public TextView txtStore;
-        public TextView txtType;
+        public TextView txtTransTo;
         public TextView txtAmount;
-        public ImageView ivbargain;
-        public TextView txtPurchaseTime;
+        public TextView txtTransDate;
 
         public TransactionViewHolder(View transactionView) {
             super(transactionView);
@@ -85,16 +81,14 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
                 @Override
                 public void onClick(View v) {
-                    if (!isShoppingList) {
 
-                    }
                 }
             });
 
-//            txtPurchaseTime = (TextView) transactionView.findViewById(R.id.txtPurchaseTime);
-//            txtAmount = (TextView) transactionView.findViewById(R.id.txtAmount);
-//            txtStore = (TextView) transactionView.findViewById(R.id.txtStore);
-//            txtType = (TextView) transactionView.findViewById(R.id.txtType);
+             txtTransDate = (TextView) transactionView.findViewById(R.id.txtTransDate);
+             txtAmount = (TextView) transactionView.findViewById(R.id.txtAmount);
+             txtTransTo= (TextView) transactionView.findViewById(R.id.txtStore);
+
         }
     }
 

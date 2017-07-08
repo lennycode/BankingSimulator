@@ -100,7 +100,7 @@ public class TransferFragment extends Fragment {
         spinnerTo = (Spinner) v.findViewById(R.id.spinAcctsto);
         submitTransfer = (Button) v.findViewById(R.id.btnSubmitTransfer);
         email = (AutoCompleteTextView) v.findViewById(R.id.email);
-        amount = (EditText)v.findViewById(R.id.amount);
+        amount = (EditText) v.findViewById(R.id.amount);
         submitTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,25 +147,40 @@ public class TransferFragment extends Fragment {
                     new RequestBankingInfo(new AsyncResponse() {
                         @Override
                         public void processFinish(Object callback) {
+                            ArrayList<Account> accountMessageEvent = null;
+                            if (accountMessageEvent == null) return;
+                            try {
+                                accountMessageEvent = (ArrayList<Account>) callback;
+                            } catch (Exception e) {
+
+                            }
+                            List<String> spinnerArray = new ArrayList<String>();
+
+                            if (countUserAccts > 0) {
+                                countUserAccts = accountMessageEvent.size();
+                                for (int i = 0; i < accountMessageEvent.size(); i++) {
+                                    Account ax = accountMessageEvent.get(i);
+                                    //Don't show other users money!
+                                    // spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + "\u20ac") + ")");
+                                    //No amounts shown!
+                                    spinnerArray.add(ax.id);
+                                    userAcctsPopulated = true;
+                                }
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                                spinnerTo.setAdapter(adapter);
+                            }
 
 
                         }
-                    }, mDownloadFragment
-                    ).getAcctByEmail(Session.email);
+                    }, mDownloadFragment).getAcctByEmail(Session.email);
                 } else {
 
                     //complain about no email...
                 }
             }
         });
-        new RequestBankingInfo(new AsyncResponse() {
-            @Override
-            public void processFinish(Object callback) {
-
-            }
-        }, mDownloadFragment
-
-        ).getAcctByEmail(Session.email);
 
 
         return v;
@@ -173,50 +188,45 @@ public class TransferFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void userInfoResut(AccountMessageEvent accountMessageEvent) {
-        List<String> spinnerArray = new ArrayList<String>();
-        if (!userAcctsPopulated) {//First time, populate top spinner
-            countUserAccts = accountMessageEvent.accounts.size();
-            for (int i = 0; i < accountMessageEvent.accounts.size(); i++) {
-                Account ax = accountMessageEvent.accounts.get(i);
-                spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + "\u20ac") + ")");
-                userAcctsPopulated = true;
-            }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            spinnerFrom.setAdapter(adapter);
 
-        } else {
-            if (countUserAccts > 0) {
-                countUserAccts = accountMessageEvent.accounts.size();
-                for (int i = 0; i < accountMessageEvent.accounts.size(); i++) {
-                    Account ax = accountMessageEvent.accounts.get(i);
-                   // spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + "\u20ac") + ")");
-                    //No amounts shown!
-                    spinnerArray.add(ax.id );
-                    userAcctsPopulated = true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        new RequestBankingInfo(new AsyncResponse() {
+            @Override
+            public void processFinish(Object callback) {
+
+                ArrayList<Account> accountMessageEvent = null;
+
+                try {
+                    accountMessageEvent = (ArrayList<Account>) callback;
+                } catch (Exception e) {
+
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                List<String> spinnerArray = new ArrayList<String>();
+                if (!userAcctsPopulated) {//First time, populate top spinner
+                    countUserAccts = accountMessageEvent.size();
+                    for (int i = 0; i < accountMessageEvent.size(); i++) {
+                        Account ax = accountMessageEvent.get(i);
+                        spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + "\u20ac") + ")");
+                        userAcctsPopulated = true;
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                spinnerTo.setAdapter(adapter);
+                    spinnerFrom.setAdapter(adapter);
+                }
+
             }
-        }
+        }, mDownloadFragment
 
-    }
-//mySpinner.getSelectedItem().toString()
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        EventBus.getDefault().register(this);
+        ).getAcctByEmail(Session.email);
     }
 
-    @Override
-    public void onDetach() {
-        EventBus.getDefault().unregister(this);
-        super.onDetach();
-    }
+    //mySpinner.getSelectedItem().toString()
 
 
 }

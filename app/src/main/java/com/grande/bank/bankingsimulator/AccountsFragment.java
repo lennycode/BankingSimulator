@@ -55,14 +55,7 @@ public class AccountsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_accounts, container, false);
         recyclerView = (RecyclerView)v.findViewById(R.id.acct_recycler_view);
 
-        new RequestBankingInfo(new AsyncResponse() {
-            @Override
-            public void processFinish(Object callback) {
 
-            }
-        }, mDownloadFragment
-
-        ).getAcctByEmail(Session.email);
         initRecyclerView(accounts);
 
         return v;
@@ -71,8 +64,7 @@ public class AccountsFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void userInfoResut(AccountMessageEvent accountMessageEvent) {
-        accounts = accountMessageEvent.accounts;
-         initRecyclerView(accounts);
+
 
     }
 
@@ -89,15 +81,21 @@ public class AccountsFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        EventBus.getDefault().register(this);
-    }
+    public void onStart() {
+        super.onStart();
+        new RequestBankingInfo(new AsyncResponse() {
+            @Override
+            public void processFinish(Object callback) {
+                try {
+                    accounts = (ArrayList<Account>) callback;
+                    initRecyclerView(accounts);
+                }catch(Exception e){
 
-    @Override
-    public void onDetach() {
-        EventBus.getDefault().unregister(this);
-        super.onDetach();
-    }
+                }
 
+            }
+        }, mDownloadFragment
+
+        ).getAcctByEmail(Session.email);
+    }
 }

@@ -18,7 +18,7 @@
 
 
         <TextView
-            android:id="@+id/txtPurchaseTime"
+            android:id="@+id/txtTransDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="top"
@@ -29,7 +29,7 @@
             android:layout_weight=".20"
             />
         <TextView
-            android:id="@+id/txtStore"
+            android:id="@+id/txtTransTo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="top"
@@ -41,16 +41,7 @@
             android:textSize="11sp"
             android:layout_weight=".4"
             />
-        <TextView
-            android:id="@+id/txtType"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="top"
-            android:text=""
-            android:textSize="11sp"
-            android:layout_weight=".20"
-            android:padding="4dp"
-            />
+
 
         <TextView
             android:id="@+id/txtAmount"

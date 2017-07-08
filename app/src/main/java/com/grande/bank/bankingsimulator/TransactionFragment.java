@@ -1,6 +1,7 @@
 package com.grande.bank.bankingsimulator;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,10 +9,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import com.grande.bank.bankingsimulator.Utilities.AccountMessageEvent;
+import com.grande.bank.bankingsimulator.Utilities.AsyncResponse;
+import com.grande.bank.bankingsimulator.Utilities.Constants;
 import com.grande.bank.bankingsimulator.Utilities.DownloadFragment;
+import com.grande.bank.bankingsimulator.Utilities.Session;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,16 +38,17 @@ public class TransactionFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    DecimalFormat df2 = new DecimalFormat(".00");
     TransactionAdapter adapter;
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     DownloadFragment mDownloadFragment;
-
+    Spinner spinnerFrom;
+    int countUserAccts = 0;
+    ArrayAdapter<String> spinAdapter;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
 
     public TransactionFragment() {
         // Required empty public constructor
@@ -70,9 +85,32 @@ public class TransactionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_transaction, container, false);
-        recyclerView = (RecyclerView)v.findViewById(R.id.my_recycler_view);
+        View v = inflater.inflate(R.layout.fragment_transaction, container, false);
+        recyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
+        mDownloadFragment = (DownloadFragment) getFragmentManager().findFragmentByTag(Constants.DF_TAG);
+        if (mDownloadFragment == null) {
+            mDownloadFragment = new DownloadFragment();
+            getFragmentManager().beginTransaction().add(mDownloadFragment, Constants.DF_TAG).commit();
+        }
+        spinnerFrom = (Spinner) v.findViewById(R.id.spinAcctsfrom);
+        spinnerFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selection = spinnerFrom.getSelectedItem().toString().split("-")[0];
+
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                return;
+            }
+        });
+
         return v;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void userInfoResut(AccountMessageEvent accountMessageEvent) {
+
+
     }
 
     private void initRecyclerView(ArrayList<Transaction> transactionList) {
@@ -87,4 +125,45 @@ public class TransactionFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        new RequestBankingInfo(new AsyncResponse() {
+            @Override
+            public void processFinish(Object callback) {
+                List<Account> accountMessageEvent = null;
+                try {
+                    accountMessageEvent = (ArrayList<Account>) callback;
+                } catch (Exception e) {
+
+                }
+                if (accountMessageEvent == null){return;}
+
+                List<String> spinnerArray = new ArrayList<String>();
+
+                countUserAccts = accountMessageEvent.size();
+                for (int i = 0; i < accountMessageEvent.size(); i++) {
+                    Account ax = accountMessageEvent.get(i);
+                    spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + "\u20ac") + ")");
+
+                }
+               spinAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+                spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                spinnerFrom.setAdapter(spinAdapter);
+
+            }
+        }, mDownloadFragment
+
+        ).getAcctByEmail(Session.email);
+
+        new RequestBankingInfo(new AsyncResponse() {
+            @Override
+            public void processFinish(Object callback) {
+
+            }
+        },mDownloadFragment
+        ).requestTransactionByUser(Session.userUUID);
+
+    }
 }
