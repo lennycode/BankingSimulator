@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/acct_balance"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Account Balance" />
+        <item
+            android:id="@+id/acct_transactions"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Recent Transactions" />
+        <item
+            android:id="@+id/acct_transfer"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Transfer Funds" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Tools" />
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/acct_user_info"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Update Account Info" />
+            <item
+                android:id="@+id/acct_pass"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Change Password" />
+
+            <item
+                android:id="@+id/acct_logout"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Log Out" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,71 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.grande.bank.bankingsimulator.TransactionFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_above="@+id/tvhead"
+            android:layout_gravity="center"
+            android:src="@drawable/euros" />
+
+        <TextView
+            android:id="@+id/tvlabelaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+
+            android:text="Transaction Details"
+
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/AccountselectTransaction"
+            android:layout_gravity="center"
+            android:textColor="@color/colorAccent" />
+
+
+
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spinAcctsfrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvhead"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:hint="@string/prompt_email"></android.support.v7.widget.AppCompatSpinner>
+
+        <TextView
+            android:id="@+id/txthdr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="33dp"
+            android:layout_gravity="center"
+            android:text="...Recent Transactions..."
+
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txthdr"
+            android:layout_marginTop="60dp" />
+    </LinearLayout>
+</FrameLayout>

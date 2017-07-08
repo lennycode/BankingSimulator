@@ -1,0 +1,39 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context="com.grande.bank.bankingsimulator.AccountsFragment">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_above="@+id/tvhead"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/euros" />
+
+    <TextView
+        android:id="@+id/tvlabelaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+
+        android:text="Account Summary"
+
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/acct_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txthdr"
+        android:layout_marginTop="10dp" />
+</LinearLayout>
+
+</FrameLayout>

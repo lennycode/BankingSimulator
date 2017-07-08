@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">BankingSimulator</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_password_confirm">Confrim Password</string>
+    <string name="prompt_card_id">16 digit Grande Card</string>
+
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_register">Register for Online Banking</string>
+
+    <string name="action_sign_up">Sign up for Online Banking!</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_new_customer">New Customer Registration</string>
+    <string name="action_login_description">Online Banking Portal</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="register_heading">New Customer Registration</string>
+
+    <string name="Welcomes">Welcomes
+    </string>
+
+    <string name="bank_first_name">Grande
+    </string>
+    <string name="bank_last_name">Bank
+    </string>
+
+    <string name="bank_full_name">Grande Bank
+    </string>
+    <string name="title_activity_controller">Grande Bank</string>
+    <string name="login_failure">Failed Login Attempt. Please Register if you do not have an account. Otherwise Contact our friendly staff at 888-999-0989</string>
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+    </string-array>
+
+    <string-array name="dummy_accts">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+
+    <string name="Accountselectionfrom">Please Select Account to Transfer from:</string>
+    <string name="Accountselectionto">Please Enter Email of User To Transfer</string>
+    <string name="btntransfer">Initiate Transfer</string>
+
+    <string name="prompt_amount">Amount to Transfer</string>
+    <string name="AccountselectTransaction">Please Select Account to View Transactions</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>
