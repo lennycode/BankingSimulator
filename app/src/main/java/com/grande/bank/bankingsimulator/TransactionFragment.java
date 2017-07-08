@@ -1,7 +1,6 @@
 package com.grande.bank.bankingsimulator;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,15 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.grande.bank.bankingsimulator.Utilities.AccountMessageEvent;
 import com.grande.bank.bankingsimulator.Utilities.AsyncResponse;
 import com.grande.bank.bankingsimulator.Utilities.Constants;
 import com.grande.bank.bankingsimulator.Utilities.DownloadFragment;
 import com.grande.bank.bankingsimulator.Utilities.Session;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -107,11 +101,7 @@ public class TransactionFragment extends Fragment {
         return v;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void userInfoResut(AccountMessageEvent accountMessageEvent) {
 
-
-    }
 
     private void initRecyclerView(ArrayList<Transaction> transactionList) {
 
@@ -160,7 +150,7 @@ public class TransactionFragment extends Fragment {
         new RequestBankingInfo(new AsyncResponse() {
             @Override
             public void processFinish(Object callback) {
-
+                initRecyclerView((ArrayList<Transaction>)callback);
             }
         },mDownloadFragment
         ).requestTransactionByUser(Session.userUUID);

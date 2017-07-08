@@ -1,10 +1,6 @@
 package com.grande.bank.bankingsimulator;
 
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,17 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.grande.bank.bankingsimulator.Utilities.AccountMessageEvent;
-import com.grande.bank.bankingsimulator.Utilities.AppState;
 import com.grande.bank.bankingsimulator.Utilities.AsyncResponse;
 import com.grande.bank.bankingsimulator.Utilities.Constants;
 import com.grande.bank.bankingsimulator.Utilities.DownloadFragment;
 import com.grande.bank.bankingsimulator.Utilities.Session;
-import com.grande.bank.bankingsimulator.Utilities.UserInfoMessageEvent;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -62,11 +51,6 @@ public class AccountsFragment extends Fragment {
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void userInfoResut(AccountMessageEvent accountMessageEvent) {
-
-
-    }
 
     private void initRecyclerView(ArrayList<Account> accountList) {
 

@@ -12,7 +12,7 @@ public class Constants {
     public static  int passwordAttempts = 3;
     public  static final String DF_TAG = "download_fragment";
     public static final String dataEndpoint = "http://192.168.2.4:8080/banking/webservices.php?f=";
-    public static final String user_transactions = "getPaymentHistoryByUser?user=%s";
+    public static final String user_transactions = "getPaymentHistoryByUser&user=%s";
     public static final String user_information = "getUserInfo&user=%s";
     public static final String login_check = "doLogin&cardID=%s&password=%s";
     public static final String register_user = "doRegister&email=%s&password=%s&cardID=%s&name=%s&surnames=%s";

@@ -2,7 +2,6 @@ package com.grande.bank.bankingsimulator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grande.bank.bankingsimulator.Utilities.AccountMessageEvent;
 import com.grande.bank.bankingsimulator.Utilities.AppState;
 import com.grande.bank.bankingsimulator.Utilities.AsyncResponse;
 import com.grande.bank.bankingsimulator.Utilities.Constants;
@@ -37,30 +36,30 @@ public class RequestBankingInfo {
     }
 
     public void requestTransactionByUser(String userId) {
-        String transactionRequest = Constants.dataEndpoint + String.format(Constants.user_transactions, userId);
+        final String transactionRequest = Constants.dataEndpoint + String.format(Constants.user_transactions, userId);
 
         mDownloadFragment.DownloadFactory(new AsyncResponse() {
             @Override
             public void processFinish(Object callback) {
                 String transactions = callback.toString();
-
+                ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
                 ObjectMapper objectMapper = new ObjectMapper();
 
                 try {
 
                     JsonNode node = objectMapper.readValue(transactions, JsonNode.class);
                     JsonNode brandNode = node.get("transactions");
-                    ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
+
                     for (int i = 0; i < brandNode.size(); i++) {
                         Transaction t = new Transaction();
                         JsonNode tNode = brandNode.get(i);
-                        t.amount = tNode.get("quantity").floatValue();
-                        t.datetime = tNode.get("timedate").toString();
-                        t.ID = tNode.get("id").asInt();
-                        t.TransactionTypeReceiver = tNode.get("type_transaction_sender").toString();
-                        t.TransactionTypeSender = tNode.get("type_transaction_receiver").toString();
-                        t.user_sender = tNode.get("id_sender").toString();
-                        t.user_receiver = tNode.get("id_receiver").toString();
+                        t.amount = Float.parseFloat(tNode.get("quantity").toString().replace("\"", ""));
+                        t.datetime = tNode.get("timedate").toString().replace("\"", "");
+                        t.ID = Integer.parseInt( tNode.get("id").toString().replace("\"", ""));
+                        t.TransactionTypeReceiver = tNode.get("type_transaction_sender").toString().replace("\"", "");
+                        t.TransactionTypeSender = tNode.get("type_transaction_receiver").toString().replace("\"", "");
+                        t.user_sender = tNode.get("id_sender").toString().replace("\"", "");
+                        t.user_receiver = tNode.get("id_receiver").toString().replace("\"", "");
                         transactionList.add(t);
 
                     }
@@ -69,10 +68,11 @@ public class RequestBankingInfo {
                 } catch (IOException e) {
                     //Send a failboy message back.
                     e.printStackTrace();
+                    transactions = null;
                 }
 
 
-                asyncCallback.processFinish((Object) transactions);
+                asyncCallback.processFinish((Object) transactionList);
             }
         }).execute(transactionRequest);
 

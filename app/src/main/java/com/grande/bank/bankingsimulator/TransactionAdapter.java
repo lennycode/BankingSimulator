@@ -18,8 +18,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     DecimalFormat df2 = new DecimalFormat(".00");
     private Context context;
     private List<Transaction> transactionList;
-//    private Picasso picasso;
-//    private OkHttpClient okHttpClient;
+
 
     public TransactionAdapter(Context context, List<Transaction> transactionList) {
         this.context = context;
@@ -44,10 +43,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         try {
             transaction = transactionList.get(position);
 
-           holder.txtAmount.setText((df2.format(transaction.amount) + "\u20ac") );
-            holder.txtTransTo.setText(transaction.user_receiver);
-            holder.txtTransDate.setText(transaction.datetime);
+            String time = transaction.datetime.split(" ")[1];
+            String date = transaction.datetime.split(" ")[0];
+            String[] edate1 = date.split("-");
+            String euroDate = edate1[2] + "/" + edate1[1] + "/" + edate1[0] + " " + time;
 
+            holder.txtAmount.setText((df2.format(transaction.amount) + "\u20ac"));
+            holder.txtTransTo.setText(transaction.user_receiver);
+            holder.txtTransDate.setText(euroDate);
+            holder.txtTransDate.setTag(transaction);
 
 
         } catch (Exception e) {
@@ -85,9 +89,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 }
             });
 
-             txtTransDate = (TextView) transactionView.findViewById(R.id.txtTransDate);
-             txtAmount = (TextView) transactionView.findViewById(R.id.txtAmount);
-             txtTransTo= (TextView) transactionView.findViewById(R.id.txtStore);
+            txtTransDate = (TextView) transactionView.findViewById(R.id.txtTransDate);
+            txtAmount = (TextView) transactionView.findViewById(R.id.txtAmount);
+            txtTransTo = (TextView) transactionView.findViewById(R.id.txtTransTo);
 
         }
     }
