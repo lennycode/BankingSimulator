@@ -15,6 +15,8 @@ import com.grande.bank.bankingsimulator.Utilities.DownloadFragment;
 import com.grande.bank.bankingsimulator.Utilities.Session;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -25,6 +27,7 @@ public class AccountsFragment extends Fragment {
     AccountAdapter adapter;
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
+
     ArrayList<Account> accounts = new ArrayList<>();
     public AccountsFragment() {
         // Required empty public constructor

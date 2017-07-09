@@ -51,7 +51,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
             Account = AccountList.get(position);
             holder.txtAmount.setText(df2.format(Account.balance)+ Constants.euroSymbol);;
             holder.txtType.setText("Checking");
-            holder.txtid.setText(Account.id);
+            holder.txtid.setText(Account.bk_id);
         } catch (Exception e) {
 
         }

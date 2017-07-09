@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +50,8 @@ public class TransferFragment extends Fragment {
     int countUserAccts = 0;
     AutoCompleteTextView email;
     DecimalFormat df2 = new DecimalFormat(".00");
-    Button fetchAccounts, submitTransfer;
+    Button fetchAccounts, submitTransfer, cancelButton;
+
     //Needed for acctnum-> acct num id mapping
     Map<String, String> fromAcctDict = new HashMap<String, String>();
     Map<String, String> toAcctDict = new HashMap<String, String>();
@@ -104,6 +107,17 @@ public class TransferFragment extends Fragment {
         submitTransfer = (Button) v.findViewById(R.id.btnSubmitTransfer);
         email = (AutoCompleteTextView) v.findViewById(R.id.email);
         amount = (EditText) v.findViewById(R.id.amount);
+        cancelButton = (Button)v.findViewById(R.id.btncancel) ;
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+
+                    ft.replace(R.id.fragment_container, new AccountsFragment() , Constants.ACCOUNTS_FRAGMENT).commit();
+            }
+        });
+
         submitTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

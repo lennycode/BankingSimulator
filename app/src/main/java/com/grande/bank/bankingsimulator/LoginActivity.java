@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Todo: add debounce(lock button so the user can't press again and cause issues)
                 new RequestBankingInfo(
                         new AsyncResponse() {
                             @Override
@@ -171,7 +172,8 @@ public class LoginActivity extends AppCompatActivity {
                     }, mDownloadFragment
 
             ).createBankingSession(event.account);
-
+            //Wipe password
+            mPasswordView.setText("");
             Session.appState = AppState.LoggedIn;
             Intent intent = new Intent(this, ControllerActivity.class);
                startActivity(intent);

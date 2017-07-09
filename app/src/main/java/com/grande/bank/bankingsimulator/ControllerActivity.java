@@ -1,5 +1,6 @@
 package com.grande.bank.bankingsimulator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +25,7 @@ import com.grande.bank.bankingsimulator.Utilities.Session;
 public class ControllerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     TextView userNameText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,16 +52,20 @@ public class ControllerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View hView =  navigationView.getHeaderView(0);
-        TextView userNameText = (TextView)hView.findViewById(R.id.textUser);
+        View hView = navigationView.getHeaderView(0);
+        TextView userNameText = (TextView) hView.findViewById(R.id.textUser);
 
-        if(Session.appState == AppState.LoggedIn){
+        if (Session.appState == AppState.LoggedIn) {
             //Just in case, because we are locking it for registration.
+            ft.replace(R.id.fragment_container, new AccountsFragment(), Constants.ACCOUNTS_FRAGMENT).commit();
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             drawer.openDrawer(Gravity.LEFT);
-            userNameText.setText(getResources().getString(R.string.Welcomes)+ " "+(Session.firstName +" "+ Session.lastName).replace("\"",""));
-            //Todo:load accounts pane
-        }else if(Session.appState == AppState.Register){
+            userNameText.setText(getResources().getString(R.string.Welcomes) + " " + (Session.firstName + " " + Session.lastName).replace("\"", ""));
+
+
+
+
+        } else if (Session.appState == AppState.Register) {
             //During registration, the main drawer is locked!
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             ft.replace(R.id.fragment_container, new UserInfoFragment(), Constants.USERINFO_FRAGMENT).commit();
@@ -105,12 +111,18 @@ public class ControllerActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-         //Handle navigation view item clicks here.
+        //Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.acct_balance) {
-            ft.replace(R.id.fragment_container, new AccountsFragment() , Constants.ACCOUNTS_FRAGMENT).commit();
+            ft.replace(R.id.fragment_container, new AccountsFragment(), Constants.ACCOUNTS_FRAGMENT).commit();
         } else if (id == R.id.acct_logout) {
+            Session.appState = AppState.LoggedOut;
+            Session.isLoggedIn = false;
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.acct_pass) {
 
@@ -119,7 +131,6 @@ public class ControllerActivity extends AppCompatActivity
 
         } else if (id == R.id.acct_transfer) {
             ft.replace(R.id.fragment_container, new TransferFragment(), Constants.TRANSFER_FRAGMENT).commit();
-
 
 
         } else if (id == R.id.acct_transactions) {

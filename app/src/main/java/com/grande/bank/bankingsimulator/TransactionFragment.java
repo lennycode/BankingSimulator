@@ -19,7 +19,9 @@ import com.grande.bank.bankingsimulator.Utilities.Session;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,6 +39,8 @@ public class TransactionFragment extends Fragment {
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     DownloadFragment mDownloadFragment;
+    Map<String, String> fromAcctDict = new HashMap<String, String>();
+
     Spinner spinnerFrom;
     int countUserAccts = 0;
     ArrayAdapter<String> spinAdapter;
@@ -90,6 +94,7 @@ public class TransactionFragment extends Fragment {
         spinnerFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = spinnerFrom.getSelectedItem().toString().split("-")[0];
+                //we can filter by acct number...
 
             }
 
@@ -100,7 +105,6 @@ public class TransactionFragment extends Fragment {
 
         return v;
     }
-
 
 
     private void initRecyclerView(ArrayList<Transaction> transactionList) {
@@ -127,17 +131,20 @@ public class TransactionFragment extends Fragment {
                 } catch (Exception e) {
 
                 }
-                if (accountMessageEvent == null){return;}
+                if (accountMessageEvent == null) {
+                    return;
+                }
 
                 List<String> spinnerArray = new ArrayList<String>();
 
                 countUserAccts = accountMessageEvent.size();
                 for (int i = 0; i < accountMessageEvent.size(); i++) {
                     Account ax = accountMessageEvent.get(i);
-                    spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + Constants.euroSymbol) + ")");
+                    fromAcctDict.put(ax.bk_id, ax.id);
+                    spinnerArray.add(ax.bk_id + "-(" + (df2.format(ax.balance) + Constants.euroSymbol) + ")");
 
                 }
-               spinAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+                spinAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
                 spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                 spinnerFrom.setAdapter(spinAdapter);
@@ -150,9 +157,9 @@ public class TransactionFragment extends Fragment {
         new RequestBankingInfo(new AsyncResponse() {
             @Override
             public void processFinish(Object callback) {
-                initRecyclerView((ArrayList<Transaction>)callback);
+                initRecyclerView((ArrayList<Transaction>) callback);
             }
-        },mDownloadFragment
+        }, mDownloadFragment
         ).requestTransactionByUser(Session.userUUID);
 
     }
