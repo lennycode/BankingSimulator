@@ -53,6 +53,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             holder.txtAmount.setText((df2.format(transaction.amount) + Constants.euroSymbol));
             holder.txtTransTo.setText(transaction.user_receiver);
             holder.txtTransDate.setText(euroDate);
+
             holder.txtTransDate.setTag(transaction);
 
 

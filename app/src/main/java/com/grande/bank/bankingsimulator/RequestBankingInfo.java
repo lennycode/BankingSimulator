@@ -15,12 +15,9 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by lenny on 7/4/17.
- */
 
 public class RequestBankingInfo {
-
+//CHECK ANDROID MONITOR TO SEE QUERIES RUN
 
     AsyncResponse asyncCallback;
     private DownloadFragment mDownloadFragment = null;
@@ -209,7 +206,7 @@ public class RequestBankingInfo {
     public void transferMoneytoUser(String senderAcct, String receiverAcct, String paymentType, String amount) {
         //Payment type is always 3
 
-        String transferRequest = Constants.dataEndpoint + String.format(Constants.accounts_by_email, senderAcct, receiverAcct, amount, paymentType);
+        String transferRequest = Constants.dataEndpoint + String.format(Constants.transfer_funds, senderAcct, receiverAcct, amount, paymentType);
         mDownloadFragment.DownloadFactory(new AsyncResponse() {
             @Override
             public void processFinish(Object data) {

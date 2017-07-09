@@ -17,7 +17,7 @@ public class Constants {
     public static final String register_user = "doRegister&email=%s&password=%s&cardID=%s&name=%s&surnames=%s";
     public static final String update_user = "doUpdateUserInfo&user=%s&email=%s&password=%s&cardID=%s&name=%s&surnames=%s";
     public static final String accounts_by_email = "getUserBankAccountsByEmail&email=%s";
-    public static final String transfer_funds = "doTransferToUser&from_account=%s&to_account=%s&quantity=%s&type_payment=&s";
+    public static final String transfer_funds = "doTransferToUser&from_account=%s&to_account=%s&quantity=%s&type_payment=%s";
     //Android likes unique tags for fragments so they can be easily located after they are created.
     public static final String TRANSFER_FRAGMENT = "transfer_fragment";
     public static final String TRANSACTION_FRAGMENT = "transaction_fragment";

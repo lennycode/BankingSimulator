@@ -4,6 +4,7 @@ package com.grande.bank.bankingsimulator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,6 +148,13 @@ public class TransferFragment extends Fragment {
                                         new RequestBankingInfo(new AsyncResponse() {
                                             @Override
                                             public void processFinish(Object callback) {
+                                                Boolean result = (Boolean)callback;
+                                                Snackbar mySnackbar = Snackbar.make(getActivity().findViewById(R.id.coordlayout),
+                                                        (result?"Transfer went thru":"Transfer Failed"), Snackbar.LENGTH_LONG);
+                                                //Optional, snackbar can create an undo action, Snackbar is temporary.
+                                                //mySnackbar.setAction(R.string.undo_string, new MyUndoListener());
+                                                mySnackbar.show();
+
 
                                             }
                                         }, mDownloadFragment).transferMoneytoUser(fromAcctDict.get( spinnerFrom.getSelectedItem().toString().split("-")[0]), toAcctDict.get( spinnerTo.getSelectedItem().toString()), "3", amount.getText().toString());
