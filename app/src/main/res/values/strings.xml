@@ -25,8 +25,8 @@
     </string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-    <string name="register_heading">New Customer Registration</string>
-
+    <string name="register_heading">New Customer Registration</string>®
+        <string name="prompt_recip_email">Account Recipient Email</string>
     <string name="Welcomes">Welcomes
     </string>
 

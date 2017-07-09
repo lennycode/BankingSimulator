@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.grande.bank.bankingsimulator.Utilities.Constants;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             String[] edate1 = date.split("-");
             String euroDate = edate1[2] + "/" + edate1[1] + "/" + edate1[0] + " " + time;
 
-            holder.txtAmount.setText((df2.format(transaction.amount) + "\u20ac"));
+            holder.txtAmount.setText((df2.format(transaction.amount) + Constants.euroSymbol));
             holder.txtTransTo.setText(transaction.user_receiver);
             holder.txtTransDate.setText(euroDate);
             holder.txtTransDate.setTag(transaction);

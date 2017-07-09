@@ -134,7 +134,7 @@ public class TransactionFragment extends Fragment {
                 countUserAccts = accountMessageEvent.size();
                 for (int i = 0; i < accountMessageEvent.size(); i++) {
                     Account ax = accountMessageEvent.get(i);
-                    spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + "\u20ac") + ")");
+                    spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + Constants.euroSymbol) + ")");
 
                 }
                spinAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);

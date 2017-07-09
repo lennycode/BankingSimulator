@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.grande.bank.bankingsimulator.Utilities.Constants;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
 
         try {
             Account = AccountList.get(position);
-            holder.txtAmount.setText(df2.format(Account.balance)+"\u20ac");;
+            holder.txtAmount.setText(df2.format(Account.balance)+ Constants.euroSymbol);;
             holder.txtType.setText("Checking");
             holder.txtid.setText(Account.id);
         } catch (Exception e) {

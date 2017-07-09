@@ -24,7 +24,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -46,6 +48,9 @@ public class TransferFragment extends Fragment {
     AutoCompleteTextView email;
     DecimalFormat df2 = new DecimalFormat(".00");
     Button fetchAccounts, submitTransfer;
+    //Needed for acctnum-> acct num id mapping
+    Map<String, String> fromAcctDict = new HashMap<String, String>();
+    Map<String, String> toAcctDict = new HashMap<String, String>();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -101,13 +106,15 @@ public class TransferFragment extends Fragment {
         submitTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Double.parseDouble(amount.getText().toString()) > 0 && !email.getText().toString().equals("")) {
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-                    builder1.setMessage(String.format(("Confirm Transfer of %s \nFrom acct %s \nTo acct %s \nBelonging to %s"), amount.getText().toString(),
-                            spinnerFrom.getSelectedItem().toString().split("-")[0],
-                            spinnerTo.getSelectedItem().toString(),
-                            email.getText().toString()
-                    ));
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                String acctFrom;
+                String acctTo;
+                try {
+                    acctFrom = spinnerFrom.getSelectedItem().toString();
+                    acctTo = spinnerTo.getSelectedItem().toString();
+
+                } catch (Exception e) {
+                    builder1.setMessage("Please check your transfer accounts!");
                     builder1.setCancelable(true);
                     builder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
@@ -118,17 +125,51 @@ public class TransferFragment extends Fragment {
 
                     );
 
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                    return;
+                }
+                if (!(amount.getText().toString().equals("")) && !email.getText().toString().equals("")) {
+                    try {
+
+                        builder1.setMessage(String.format(("Confirm Transfer of %s" + Constants.euroSymbol + " \nFrom acct %s \nTo acct %s \nBelonging to %s"), amount.getText().toString(),
+                                spinnerFrom.getSelectedItem().toString().split("-")[0],
+                                spinnerTo.getSelectedItem().toString(),
+                                email.getText().toString()
+                        ));
+
+                        builder1.setCancelable(true);
+                        builder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        new RequestBankingInfo(new AsyncResponse() {
+                                            @Override
+                                            public void processFinish(Object callback) {
+
+                                            }
+                                        }, mDownloadFragment).transferMoneytoUser(fromAcctDict.get( spinnerFrom.getSelectedItem().toString().split("-")[0]), toAcctDict.get( spinnerTo.getSelectedItem().toString()), "3", amount.getText().toString());
+
+                                    }
+                                }
+
+                        );
+                    } catch (Exception e) {
+                         //  todo: If the arryays fail because of no account, we can put a message here.
+                    }
+
                     builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                                    //Cancel message?
                                 }
                             }
 
                     );
 
 
-                    //Optional, lock out fields if we exceed Constants.passwordAttempts/
+
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
                 }
@@ -145,12 +186,13 @@ public class TransferFragment extends Fragment {
                         @Override
                         public void processFinish(Object callback) {
                             ArrayList<Account> accountMessageEvent = null;
-                            if (accountMessageEvent == null) return;
+
                             try {
                                 accountMessageEvent = (ArrayList<Account>) callback;
                             } catch (Exception e) {
 
                             }
+                            if (accountMessageEvent == null) return;
                             List<String> spinnerArray = new ArrayList<String>();
 
                             if (countUserAccts > 0) {
@@ -160,7 +202,8 @@ public class TransferFragment extends Fragment {
                                     //Don't show other users money!
                                     // spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + "\u20ac") + ")");
                                     //No amounts shown!
-                                    spinnerArray.add(ax.id);
+                                    toAcctDict.put(ax.bk_id, ax.id);
+                                    spinnerArray.add(ax.bk_id);
                                     userAcctsPopulated = true;
                                 }
                                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
@@ -171,7 +214,7 @@ public class TransferFragment extends Fragment {
 
 
                         }
-                    }, mDownloadFragment).getAcctByEmail(Session.email);
+                    }, mDownloadFragment).getAcctByEmail(email.getText().toString().trim());
                 } else {
 
                     //complain about no email...
@@ -203,7 +246,8 @@ public class TransferFragment extends Fragment {
                     countUserAccts = accountMessageEvent.size();
                     for (int i = 0; i < accountMessageEvent.size(); i++) {
                         Account ax = accountMessageEvent.get(i);
-                        spinnerArray.add(ax.id + "-(" + (df2.format(ax.balance) + "\u20ac") + ")");
+                        fromAcctDict.put(ax.bk_id, ax.id);
+                        spinnerArray.add(ax.bk_id + "-(" + (df2.format(ax.balance) + Constants.euroSymbol) + ")");
                         userAcctsPopulated = true;
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
