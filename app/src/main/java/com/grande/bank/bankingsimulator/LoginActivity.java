@@ -120,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Todo: add debounce(lock button so the user can't press again and cause issues)
+                mProgressView.setVisibility(View.VISIBLE);
                 new RequestBankingInfo(
                         new AsyncResponse() {
                             @Override
@@ -161,6 +162,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void verifyLoginAttempt(LoginMessageEvent event) {
+        mProgressView.setVisibility(View.GONE);
         if (event.outcome) { //succesfful attempt
             //Fetch user details
             new RequestBankingInfo(
@@ -179,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                startActivity(intent);
 
             mPasswordAttempts = 0;
+
         } else{ //bad credentials
             Session.appState = AppState.LoggedOut;
 
