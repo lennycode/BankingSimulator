@@ -53,7 +53,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             holder.txtAmount.setText((df2.format(transaction.amount) + Constants.euroSymbol));
             holder.txtTransTo.setText(transaction.user_receiver);
             holder.txtTransDate.setText(euroDate);
-
+            holder.txtTransFrom.setText(transaction.user_sender);
             holder.txtTransDate.setTag(transaction);
 
 
@@ -79,8 +79,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         public CardView cvTransaction;
         public TextView txtTransTo;
+        public TextView txtTransFrom;
         public TextView txtAmount;
         public TextView txtTransDate;
+
 
         public TransactionViewHolder(View transactionView) {
             super(transactionView);
@@ -95,7 +97,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             txtTransDate = (TextView) transactionView.findViewById(R.id.txtTransDate);
             txtAmount = (TextView) transactionView.findViewById(R.id.txtAmount);
             txtTransTo = (TextView) transactionView.findViewById(R.id.txtTransTo);
-
+            txtTransFrom = (TextView) transactionView.findViewById(R.id.txtTransFrom);
         }
     }
 

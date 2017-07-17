@@ -1,5 +1,8 @@
 package com.grande.bank.bankingsimulator;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -73,13 +76,43 @@ public class ControllerActivity extends AppCompatActivity
 
     }
 
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+           // super.onBackPressed();
+            final Class lac = LoginActivity.class;
+            final Activity act = this;
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage( "Would you like to log out?");
+            builder1.setCancelable(true);
+            builder1.setPositiveButton("Log Out", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Session.appState = AppState.LoggedOut;
+                            Session.isLoggedIn = false;
+                            Intent intent = new Intent(act, lac);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+            );
+            builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }
+
+            );
+            //Optional, lock out fields if we exceed Constants.passwordAttempts/
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
         }
     }
 

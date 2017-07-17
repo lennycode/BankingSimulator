@@ -40,10 +40,12 @@ public class TransactionFragment extends Fragment {
     LinearLayoutManager layoutManager;
     DownloadFragment mDownloadFragment;
     Map<String, String> fromAcctDict = new HashMap<String, String>();
-
+    ArrayList<Transaction> allTransactions = null;
     Spinner spinnerFrom;
     int countUserAccts = 0;
     ArrayAdapter<String> spinAdapter;
+
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -93,9 +95,11 @@ public class TransactionFragment extends Fragment {
         spinnerFrom = (Spinner) v.findViewById(R.id.spinAcctsfrom);
         spinnerFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String selection = spinnerFrom.getSelectedItem().toString().split("-")[0];
+                //String selection = spinnerFrom.getSelectedItem().toString().split("-")[0];
                 //we can filter by acct number...
-
+                if(allTransactions != null) {
+                    filteredTx();
+                }
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -149,18 +153,37 @@ public class TransactionFragment extends Fragment {
 
                 spinnerFrom.setAdapter(spinAdapter);
 
+                new RequestBankingInfo(new AsyncResponse() {
+                    @Override
+                    public void processFinish(Object callback) {
+
+                            allTransactions = (ArrayList<Transaction>) callback;
+
+                            filteredTx();
+
+
+                    }
+                }, mDownloadFragment
+                ).requestTransactionByUser(Session.userUUID);
+
+
             }
         }, mDownloadFragment
 
         ).getAcctByEmail(Session.email);
 
-        new RequestBankingInfo(new AsyncResponse() {
-            @Override
-            public void processFinish(Object callback) {
-                initRecyclerView((ArrayList<Transaction>) callback);
-            }
-        }, mDownloadFragment
-        ).requestTransactionByUser(Session.userUUID);
 
+    }
+
+
+    void filteredTx() {
+        ArrayList<Transaction> fTransactions = new ArrayList<>();
+        for (Transaction tx : allTransactions) {
+            String selection = spinnerFrom.getSelectedItem().toString().split("-")[0];
+            if (tx.user_receiver.equals(selection) || tx.user_receiver.equals(selection)) {
+                fTransactions.add(tx);
+            }
+        }
+        initRecyclerView(fTransactions);
     }
 }

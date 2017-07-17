@@ -52,18 +52,85 @@
             android:layout_below="@id/tvhead"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:hint="@string/prompt_email"></android.support.v7.widget.AppCompatSpinner>
+        <View
 
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="36dp"
+            android:background="#000000" />
         <TextView
             android:id="@+id/txthdr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="33dp"
+
             android:layout_gravity="center"
             android:text="...Recent Transactions..."
 
             />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp"
+            android:layout_marginBottom="-16dp"
+            android:weightSum="1">
+
+
+            <TextView
+                android:id="@+id/txtTransDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:padding="4dp"
+                android:text="Tx Date"
+                android:textColor="#000"
+                android:textSize="11sp"
+                android:layout_weight=".25"
+                />
+
+            <TextView
+                android:id="@+id/txtTransFrom"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:padding="4dp"
+                android:lines="1"
+                android:text="Source Acct"
+                android:textColor="#000"
+                android:textSize="11sp"
+                android:layout_weight=".3"
+                />
+            <TextView
+                android:id="@+id/txtTransTo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="top"
+
+                android:paddingTop="4dp"
+                android:lines="1"
+                android:text="Dest Acct"
+                android:textColor="#000"
+                android:textSize="11sp"
+                android:layout_weight=".3"
+                />
+
+
+            <TextView
+                android:id="@+id/txtAmount"
+                android:paddingTop="4dp"
+                android:layout_marginLeft= "-8dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".15"
+                android:gravity="top"
+
+                android:textSize="11sp"
+                android:text="Amount" />
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/my_recycler_view"

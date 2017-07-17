@@ -53,8 +53,10 @@ public class RequestBankingInfo {
                         t.ID = Integer.parseInt(tNode.get("id").toString().replace("\"", ""));
                         t.TransactionTypeReceiver = tNode.get("type_transaction_sender").toString().replace("\"", "");
                         t.TransactionTypeSender = tNode.get("type_transaction_receiver").toString().replace("\"", "");
-                        t.user_sender = tNode.get("id_sender").toString().replace("\"", "");
-                        t.user_receiver = tNode.get("id_receiver").toString().replace("\"", "");
+                        //t.user_sender = tNode.get("id_sender").toString().replace("\"", "");
+                        //t.user_receiver = tNode.get("id_receiver").toString().replace("\"", "");
+                        t.user_sender = tNode.get("id_sender_account").toString().replace("\"", "");
+                        t.user_receiver = tNode.get("id_receiver_account").toString().replace("\"", "");
                         transactionList.add(t);
 
                     }

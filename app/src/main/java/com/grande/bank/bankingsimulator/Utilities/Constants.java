@@ -10,7 +10,7 @@ import android.content.res.Resources;
 public class Constants {
 
     public static final String DF_TAG = "download_fragment";
-    public static final String dataEndpoint = "http://192.168.2.4:8080/banking/webservices.php?f=";
+    public static final String dataEndpoint = "http://192.168.2.5:8080/banking/webservices.php?f=";
     public static final String user_transactions = "getPaymentHistoryByUser&user=%s";
     public static final String user_information = "getUserInfo&user=%s";
     public static final String login_check = "doLogin&cardID=%s&password=%s";

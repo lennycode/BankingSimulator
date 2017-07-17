@@ -3,7 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cvItem"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
+    android:layout_height="48dp"
     android:layout_gravity="center"
     android:layout_margin=".5dp"
     android:background="#FFF"
@@ -28,27 +28,41 @@
             android:textSize="11sp"
             android:layout_weight=".25"
             />
+
+        <TextView
+            android:id="@+id/txtTransFrom"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:padding="4dp"
+            android:lines="1"
+            android:text=""
+            android:textColor="#000"
+            android:textSize="11sp"
+            android:layout_weight=".3"
+            />
         <TextView
             android:id="@+id/txtTransTo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="top"
-            android:padding="4dp"
-            android:lines="2"
-            android:text="Two Line Description
-                    allowed"
+
+            android:paddingTop="4dp"
+            android:lines="1"
+            android:text=""
             android:textColor="#000"
             android:textSize="11sp"
-            android:layout_weight=".4"
+            android:layout_weight=".3"
             />
 
 
         <TextView
             android:id="@+id/txtAmount"
-            android:padding="4dp"
+            android:paddingTop="4dp"
+            android:layout_marginLeft= "-8dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".20"
+            android:layout_weight=".15"
             android:gravity="top"
             android:textSize="11sp"
             android:text="$0.00" />
